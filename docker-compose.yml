@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: weather_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - weather_network
+
+  api:
+    build:
+      context: .
+      dockerfile: WeatherAPI/Dockerfile
+    container_name: weather_api
+    ports:
+      - "8081:8080"
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - weather_network
+
+  worker:
+    build:
+      context: .
+      dockerfile: WeatherWorker/Dockerfile
+    container_name: weather_worker
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    networks:
+      - weather_network
+
+networks:
+  weather_network:
+    driver: bridge

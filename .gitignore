@@ -1,0 +1,19 @@
+## Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build results
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+
+## VS Code
+.vscode/
+
+## Пользовательские настройки
+appsettings.Development.json
